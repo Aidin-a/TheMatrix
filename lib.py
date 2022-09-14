@@ -2,6 +2,7 @@ import os
 import sys
 import game
 from time import sleep
+import db
 
 
 class bcolors:
@@ -58,6 +59,9 @@ def startGame():
 
 def setupFinished():
     say("> Press Any Key To Start The Game!...")
+    DB = db.getDB()
+    DB["isInstalled"] = True
+    db.setDB(DB)
     input()
     runGame()
 
@@ -89,25 +93,3 @@ def gameSetup():
 
 def runGame():
     game.start()
-
-
-def writeFile(filePath, fileName, fileContent):
-    isdir = os.path.isdir(filePath)
-    if not isdir:
-        os.mkdir(filePath)
-    try:
-        fn = os.path.join(filePath, fileName)
-        fo = open(fn, "w")
-        fo.write(fileContent)
-        fo.close()
-        return True
-    except FileExistsError:
-        return False
-
-
-def readFile(filePath, fileName):
-    fn = os.path.join(filePath, fileName)
-    fo = open(fn, "r")
-    fileContent = fo.read()
-    fo.close()
-    return fileContent

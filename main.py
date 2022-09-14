@@ -1,9 +1,9 @@
 import lib
-from db import db
+import db
 
-if not db.isInstalled:
-    lib.startGame()
-else:
+if db.getDB()["isInstalled"]:
     lib.runGame()
+else:
+    lib.startGame()
 
 quit(input())
