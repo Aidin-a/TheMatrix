@@ -1,5 +1,6 @@
-import os
 import sys
+import tkinter
+import tkinter.ttk
 import game
 from time import sleep
 import db
@@ -15,6 +16,9 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+
+
+geometries = ["1920x1080", "1600x900", "1366x768", "1280x720"]
 
 
 def say(string):
@@ -92,4 +96,30 @@ def gameSetup():
 
 
 def runGame():
-    game.start()
+    game.login()
+
+
+def showGameWindow(loginWindow):
+    loginWindow.destroy()
+    startGameWindow = tkinter.Tk()
+    startGameWindow.title("The Matrix")
+    photo = tkinter.PhotoImage(file='./Icons/Logo.png')
+    startGameWindow.wm_iconphoto(True, photo)
+    screen_width = startGameWindow.winfo_screenwidth()
+    screen_height = startGameWindow.winfo_screenheight()
+    x = (screen_width / 2) - (200 / 2)
+    y = (screen_height / 2) - (65 / 2)
+    startGameWindow.geometry('%dx%d+%d+%d' % (200, 65, x, y))
+    gameFrame = tkinter.Frame(padx=10, pady=10)
+    gameFrame.pack()
+
+    def checkGeometries():
+        geometry = combo.get()
+        if geometry in geometries:
+            game.start(geometry.split("x"))
+            startGameWindow.destroy()
+
+    combo = tkinter.ttk.Combobox(master=gameFrame, values=geometries)
+    button = tkinter.ttk.Button(master=gameFrame, text="Start Game!...", command=checkGeometries)
+    combo.pack()
+    button.pack()
